@@ -1,35 +1,35 @@
 import React from 'react';
 
+/* common */
+import { colorList } from '../../../../Common/color_list';
+
 /* style */
 import './restaurant.scss';
 
 /* anted */
-import { Table, Tag, Space } from 'antd';
+import { Table, Tag ,Button,Switch } from 'antd';
 
 export default function Restaurant () {
-
     const columns = [
         {
-            title: 'Name',
+            title: '餐馆',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: 'Address',
+            title: '地址',
             dataIndex: 'address',
             key: 'address',
         },
         {
-            title: 'Tags',
+            title: '标签',
             key: 'tags',
             dataIndex: 'tags',
             render: tags => (
                 <span>
                     {tags.map(tag => {
-                        let color = tag.length > 5 ? 'magenta' : 'red';
-                        if (tag === 'loser') {
-                            color = 'volcano';
-                        }
+                        let color = colorList[parseInt(Math.random() * colorList.length)];
+
                         return (
                             <Tag color={ color } key={ tag } style={{}}>
                                 {tag.toUpperCase()}
@@ -40,12 +40,21 @@ export default function Restaurant () {
             ),
         },
         {
-            title: 'Action',
+            title: '操作',
             key: 'action',
             render: () => (
-                <Space size="middle">
-                    <span>111</span>
-                </Space>
+                <Button type="primary">操作</Button>
+            ),
+        },
+        {
+            title: '手动关闭',
+            key: 'close',
+            render: () => (
+                <Switch
+                    onChange={ (checked)=>{
+                        console.log(checked);
+                    } }
+                >操作</Switch>
             ),
         },
     ];
