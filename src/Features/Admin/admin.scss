@@ -1,0 +1,61 @@
+@import '~antd/dist/antd.css';
+@import '../../Style/public.scss';
+
+
+/* public bgc */
+.bgc-1F {
+  background-color : #1F1F1F !important;
+}
+
+.bgc-26 {
+  background-color : #262626 !important;
+}
+
+.bgc-00{
+  background-color : #000;
+}
+
+/* public position */
+.left {
+  text-align : left;
+}
+
+/* public color */
+.col-45 {
+  color : hsla(0,0%,100%,.45);
+}
+
+.col-85 {
+  color : hsla(0,0%,100%,.85)
+}
+
+/* public font */
+.fw{
+  font-weight : 600;
+}
+
+/* anted */
+.site-layout .site-layout-background {
+  background : #fff;
+}
+
+.ant-layout-sider-trigger {
+  background-color : #262626 !important;
+}
+
+.ant-breadcrumb-separator {
+  color : hsla(0,0%,100%,.45);
+}
+
+
+.logo {
+    display : flex;
+    align-items : center;
+    justify-content : center;
+    height : 120px;
+    &-img{
+      width : 60px;
+      height : 60px;
+      filter : invert(100%) sepia(0) saturate(5338%) hue-rotate(117deg) brightness(110%) contrast(101%);
+    }
+}
