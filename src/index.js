@@ -2,13 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import store from './app/store';
+import store from './Redux/Store/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+
+/* component */
+import Loading from './Components/Loading/Loading';
+import Modal from './Components/Modal/ModalH';
 
 ReactDOM.render(
     <Provider store={ store }>
         <App />
+        <Loading/>
+        <Modal/>
     </Provider>,
     document.getElementById('root')
 );

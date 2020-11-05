@@ -1,0 +1,20 @@
+.ant-input::placeholder {
+  color : rgba(255, 255, 255, 0.85) !important;
+}
+
+.rest-tags{
+  .tags{
+    display : inline-block;
+    width : 250px !important;
+    vertical-align : top;
+  }
+}
+
+.time-title {
+  color :hsla(0,0%,100%,.45)
+}
+
+.date-main {
+    font-size : 24px;
+    color : hsla(0,0%,100%,.85);
+}
