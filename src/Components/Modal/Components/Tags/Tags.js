@@ -7,19 +7,19 @@ import { useSelector,useDispatch } from 'react-redux';
 import { colorList } from '../../../../Common/color_list';
 
 /* action */
-import { tag,closeTags } from '../../../../Redux/Reducer/modal';
+import { restInfo,closeTags } from '../../../../Redux/Reducer/modal';
 
 /* anted */
 import { Tag } from 'antd';
 
 const Tags = memo(()=> {
 
-    let initTags = useSelector(tag);
+    let restItem = useSelector(restInfo);
 
     let dispatch = useDispatch();
 
     let renderHasTags = ()=>{
-        return _.map(initTags,tag => {
+        return _.map(restItem.tags,tag => {
             let color = colorList[parseInt(Math.random() * colorList.length)];
 
             return (
@@ -35,7 +35,7 @@ const Tags = memo(()=> {
     };
 
     let handleClose = (tag)=>{
-        dispatch(closeTags(_.indexOf(initTags,tag)));
+        dispatch(closeTags(_.indexOf(restItem.tags,tag)));
     };
 
     return (

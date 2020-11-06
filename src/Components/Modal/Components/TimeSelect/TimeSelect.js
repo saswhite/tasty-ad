@@ -1,5 +1,5 @@
 import React,{ memo } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import moment from 'moment-timezone';
 import _ from 'lodash';
 import { v4 } from 'uuid';
@@ -12,11 +12,13 @@ import { TimePicker,Button } from 'antd';
 const { RangePicker } = TimePicker;
 
 /* action */
-import { restInfo } from '../../../../Redux/Reducer/modal';
+import { restInfo,updateDateTime } from '../../../../Redux/Reducer/modal';
 
 let  TimeSelect = memo(()=> {
 
     let restItem = useSelector(restInfo);
+
+    let dispatch = useDispatch();
 
     let renderTimeSelect = ()=>{
         let clone =  _.cloneDeep(restItem.hours);
@@ -33,6 +35,22 @@ let  TimeSelect = memo(()=> {
                     <Button disabled>{getWeek(index + 1)}</Button>
                     <RangePicker
                         defaultValue={ d }
+                        onChange={ (v)=>{
+                            let week = 0;
+                            if(index < 6){
+                                week = index + 1;
+                            }else {
+                                week = 0;
+                            }
+
+                            let data = {
+                                type: 'delivery',
+                                dayOfWeek:week,
+                                start: v[0].minute() + v[0].hour() * 60,
+                                end: v[1].minute() + v[1].hour() * 60,
+                            };
+                            dispatch(updateDateTime(data));
+                        } }
                     />
                 </div>
             );

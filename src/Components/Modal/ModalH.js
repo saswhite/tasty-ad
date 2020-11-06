@@ -15,9 +15,9 @@ import { Modal,Select,Input,Form } from 'antd';
 const { Option } = Select;
 
 /* action */
-import { isShow,data,hideModal } from '../../Redux/Reducer/modal';
+import { isShow,hideModal } from '../../Redux/Reducer/modal';
 import { initLan,setLan } from '../../Redux/Reducer/intl';
-import { tagList,sendRequestTags,tag,updateTags,restInfo,updateRestInfo } from '../../Redux/Reducer/modal';
+import { tagList,restInfo,sendRequestTags,updateRestInfo,updateTags,restName,updateInputTitle } from '../../Redux/Reducer/modal';
 
 /* components */
 import Tags from './Components/Tags/Tags';
@@ -26,22 +26,15 @@ import TimeSelect from './Components/TimeSelect/TimeSelect';
 export default function ModalH () {
 
     let [ confirmLoading,setConfirmLoading ] = useState(false);
-
     let [ timer,setTimer ] = useState(null);
-
     let [ dateT,setDateT ] = useState(moment.tz('America/New_York').clone().format('YYYY-MM-DD HH:mm:ss'));
+    // let [ restTitle,setRestTitle ] = useState('');
 
     let visible = useSelector(isShow);
-
-    let modalData = useSelector(data);
-
     let lan = useSelector(initLan);
-
     let tags = useSelector(tagList);
-
-    let initTags = useSelector(tag);
-
     let restItem = useSelector(restInfo);
+    let restTitle = useSelector(restName);
 
     let dispatch = useDispatch();
 
@@ -69,27 +62,34 @@ export default function ModalH () {
     /* modal框的ok按钮 */
     let handleOk = () => {
         setConfirmLoading(true);
+
+        let clone = _.cloneDeep(restItem);
+        clone.name[lan] = restTitle[lan];
+        restItem = clone;
         setTimeout(() => {
-            dispatch(hideModal());
+            dispatch(updateRestInfo(restItem));
             setConfirmLoading(false);
+            dispatch(hideModal());
         }, 2000);
-        dispatch(updateRestInfo());
+
     };
 
     /* modal框的关闭按钮 */
     let handleCancel = () => {
         console.log(restItem);
         dispatch(hideModal());
+
     };
 
     /* 选择框的改变事件 */
     let handleLanChange = (value)=> {
         dispatch(setLan(value));
+
     };
 
     /* 标签选择器改变事件 */
     let handleTagChange = (value)=>{
-        if(_.indexOf(initTags,value) < 0){
+        if(_.indexOf(restItem.tags,value) < 0){
             dispatch(updateTags(value));
         }
     };
@@ -97,7 +97,7 @@ export default function ModalH () {
     return (
         <div>
             { visible && (<Modal
-                title={ modalData[lan] }
+                title={ _.cloneDeep(restItem.name[lan]) }
                 visible={ visible }
                 onOk={ handleOk }
                 confirmLoading={ confirmLoading }
@@ -109,22 +109,30 @@ export default function ModalH () {
                     <Form.Item
                         className="rest-title"
                         label="餐馆名称：">
-                        <Select defaultValue="zh-CN" style={{ width : 120 }} onChange={ handleLanChange }>
+                        <Select defaultValue={ lan } style={{ width : 120 }} onChange={ handleLanChange }>
                             <Option value="zh-CN">中文</Option>
                             <Option value="en-US">英文</Option>
                         </Select>
-                        <Input placeholder={ `${modalData[lan]}` } style={{ width : 200 }}/>
+                        <Input
+                            value = { restTitle[lan] }
+                            style={{ width : 200 }}
+                            onChange={ (e)=>{
+                                dispatch(updateInputTitle({
+                                    lang: lan,
+                                    value:e.target.value
+                                }));
+                            } }
+                        />
                     </Form.Item>
                     <Form.Item
                         className="rest-tags"
                         label="餐馆标签："
-                        initialValue={ initTags[0] }
                     >
                         <Select
                             style={{ width : 120 }}
                             onChange={ handleTagChange }
                             id="tags"
-                            defaultValue={ initTags[0] }
+                            defaultValue={ restItem.tags[0] }
                         >
                             {renderTags()}
                         </Select>
