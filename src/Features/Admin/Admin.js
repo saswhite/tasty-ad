@@ -27,13 +27,22 @@ export default function Admin () {
     /* 侧边栏的拉开和合拢 */
     let onCollapse = ()=>{
         setCollapsed(!collapsed);
-        console.log(location);
+        console.log(location.pathname.split('/')[2]);
     };
 
     /* 对当前url地址的处理 */
     let renderLocation = ()=>{
         let title = location.pathname;
         return title.split('/')[2].charAt(0).toUpperCase() + title.split('/')[2].slice(1);
+    };
+
+    /* 设置默认的key */
+    let renderDefaultKey = ()=>{
+        if(location.pathname.split('/')[2] === 'restaurant'){
+            return '1';
+        }else if(location.pathname.split('/')[2] === 'menu'){
+            return '2';
+        }
     };
 
     return (
@@ -43,7 +52,7 @@ export default function Admin () {
                     <div className="logo" >
                         <img  src={ LOGO_URL } className="logo-img"/>
                     </div>
-                    <Menu theme="dark" defaultSelectedKeys={ [ '1' ] } mode="inline" className="bgc-1F">
+                    <Menu theme="dark" defaultSelectedKeys={ [ renderDefaultKey() ] } mode="inline" className="bgc-1F">
                         <Menu.Item key="1" icon={ <PieChartOutlined /> }>
                             <Link to={ `${url}/restaurant` }>餐馆</Link>
                         </Menu.Item>

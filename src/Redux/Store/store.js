@@ -8,6 +8,7 @@ import modalReducer from '../Reducer/modal';
 
 /* pages */
 import restReducer from '../../Features/Admin/Components/Restaurant/state/reducer';
+import menuReducer from '../../Features/Admin/Components/Menu/state/reducer';
 
 export default configureStore({
     reducer: {
@@ -15,6 +16,7 @@ export default configureStore({
         loading: loagingReducer,
         rest: restReducer,
         intl: intlReducer,
-        modal:modalReducer
+        modal:modalReducer,
+        menu:menuReducer
     },
 });

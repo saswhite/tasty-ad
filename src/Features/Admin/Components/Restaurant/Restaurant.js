@@ -76,7 +76,7 @@ export default function Restaurant () {
                 <Switch
                     onChange={ (checked)=>{ hangdleClose(checked,v.clone);} }
                     checked={ v.closed ? true : false }
-                >操作</Switch>
+                ></Switch>
             ),
         },
     ];
