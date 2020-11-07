@@ -53,7 +53,7 @@ export default function Menu () {
         }
     });
 
-    let filterMain = ({ setSelectedKeys, selectedKeys, confirm })=>{
+    let filterMain = ({ setSelectedKeys, selectedKeys ,clearFilters })=>{
         return (
             <div>
                 <Input
@@ -62,13 +62,13 @@ export default function Menu () {
                         setFilterValue(e.target.value);
                         return setSelectedKeys(e.target.value ? [ e.target.value ] : []);
                     } }
-                    onPressEnter={ ()=>{ handleSearch(selectedKeys, confirm); } }
+                    onPressEnter={ ()=>{ handleSearch(selectedKeys,clearFilters); } }
                 />
                 <Space>
                     <Button
                         size="small"
                         style={{ width : 90 }}
-                        onClick={ ()=>{ handleSearch(selectedKeys); } }
+                        onClick={ ()=>{ handleSearch(selectedKeys,clearFilters); } }
                     >
                       搜索
                     </Button>
@@ -78,13 +78,14 @@ export default function Menu () {
     };
 
     /* 处理过滤搜索 */
-    let handleSearch = (selectedKeys)=>{
+    let handleSearch = (selectedKeys,clearFilters)=>{
         // confirm();
         let nPageInfo = {
             ...pageInfo,
             keyword:selectedKeys[0]
         };
         dispatch(rquestFoodList(nPageInfo));
+        clearFilters();
     };
 
     /* food数据处理 */
@@ -142,7 +143,6 @@ export default function Menu () {
                     style={{ width : '200px' }}
                     className="left"
                     onChange={ (v)=>{
-                        console.log('search in');
                         let data = {};
                         _.forEach(rest,(item)=>{
                             if(item.name['en-US'] === v){
@@ -170,17 +170,21 @@ export default function Menu () {
                         defaultCurrent:1,
                         total: totalFoods,
                         onChange:(page,pageSize)=>{
-                            let data = {
-                                id: restT._id,
-                                page: page,
-                                limit: pageSize,
-                                keyword: filterValue
-                            };
-                            setPageInfo(data);
+
                             setPageSize(pageSize);
-                            dispatch(rquestFoodList(data));
+
                         }
-                    }}/>
+                    }}
+                    onChange={ (pagination)=>{
+                        let data = {
+                            id: restT._id,
+                            page: pagination.current,
+                            limit: pagination.pageSize,
+                            keyword: filterValue
+                        };
+                        setPageInfo(data);
+                        dispatch(rquestFoodList(data));
+                    } }/>
 
             </div>
         </div>

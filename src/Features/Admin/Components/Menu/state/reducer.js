@@ -29,7 +29,6 @@ export const rquestFoodList = (data)=>{
     return async (dispatch)=>{
         try {
             let foodRes = await Food(data);
-            console.log(foodRes);
             dispatch(renderFoodList(foodRes.list));
             dispatch(renderTotal(foodRes.count));
 
@@ -44,7 +43,6 @@ export const updateFood = (data,pageIn)=>{
             dispatch(showLoading());
             await setAvailable(data);
             let foodRes = await Food(pageIn);
-            console.log(foodRes);
             dispatch(renderFoodList(foodRes.list));
             dispatch(renderTotal(foodRes.count));
 
