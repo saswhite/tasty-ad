@@ -8,8 +8,9 @@ import './admin.scss';
 import { LOGO_URL } from '../../Common/img_url';
 
 /* component */
-import menu from './Components/Menu/Menu';
-import restaurant from './Components/Restaurant/Restaurant';
+import menuCom from './Components/Menu/Menu';
+import restCom from './Components/Restaurant/Restaurant';
+import orderCom from './Components/Order/Order';
 
 /* anted */
 import { Layout,Breadcrumb,Menu } from 'antd';
@@ -59,6 +60,9 @@ export default function Admin () {
                         <Menu.Item key="2" icon={ <DesktopOutlined /> }>
                             <Link to={ `${url}/menu` }>菜单</Link>
                         </Menu.Item>
+                        <Menu.Item key="3" icon={ <DesktopOutlined /> }>
+                            <Link to={ `${url}/order` }>订单</Link>
+                        </Menu.Item>
                     </Menu>
                 </Sider>
                 <Layout className="site-layout bgc-00">
@@ -70,8 +74,9 @@ export default function Admin () {
                         </Breadcrumb>
                         <div className="site-layout-background" style={{ padding : 24, minHeight : 360 }}>
                             <Switch>
-                                <Route path={ `${path}/restaurant` } component={ restaurant }/>
-                                <Route path={ `${path}/menu` } component={ menu }/>
+                                <Route path={ `${path}/restaurant` } component={ restCom }/>
+                                <Route path={ `${path}/menu` } component={ menuCom }/>
+                                <Route path={ `${path}/order` } component={ orderCom }/>
                             </Switch>
                         </div>
                     </Content>

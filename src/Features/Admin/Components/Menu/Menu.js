@@ -12,7 +12,7 @@ import './menu.scss';
 
 /* action */
 import { sendRequestRest,restList } from '../Restaurant/state/reducer';
-import { foods,totalF,restTar,rquestFoodList,setRest,updateFood } from '../Menu/state/reducer';
+import { foods,totalF,restTar,rquestFoodList,setRest,updateFood ,clearList } from '../Menu/state/reducer';
 
 export default function Menu () {
 
@@ -29,6 +29,7 @@ export default function Menu () {
 
     useEffect(() => {
         dispatch(sendRequestRest());
+        dispatch(clearList());
     }, []);
 
     /* 所有的餐馆名称 */
@@ -149,7 +150,7 @@ export default function Menu () {
                                 data.id = item._id;
                                 data.page = 1;
                                 data.limit = pageSize;
-                                data.keyword = filterValue;
+                                data.keyword = '';
                                 dispatch(setRest(item));
                             }
                         });
@@ -164,18 +165,15 @@ export default function Menu () {
             </div>
             <div className="table-foods">
                 <Table
+                    locale='emptyText'
                     columns={ columns }
                     dataSource={ renderData() }
                     pagination={{
                         defaultCurrent:1,
                         total: totalFoods,
-                        onChange:(page,pageSize)=>{
-
-                            setPageSize(pageSize);
-
-                        }
                     }}
                     onChange={ (pagination)=>{
+                        setPageSize(pagination.pageSize);
                         let data = {
                             id: restT._id,
                             page: pagination.current,

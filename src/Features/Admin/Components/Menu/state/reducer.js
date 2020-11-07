@@ -19,11 +19,15 @@ export const menuSlice = createSlice({
         },
         setRest: (state, action) => {
             state.rest = action.payload;
+        },
+        clearList: state=>{
+            state.foodList = {};
+            state.total = 0;
         }
     },
 });
 
-export const { renderFoodList,renderTotal,setRest } = menuSlice.actions;
+export const { renderFoodList,renderTotal,setRest,clearList } = menuSlice.actions;
 
 export const rquestFoodList = (data)=>{
     return async (dispatch)=>{
