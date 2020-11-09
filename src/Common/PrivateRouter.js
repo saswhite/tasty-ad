@@ -15,25 +15,21 @@ export default function PrivateRouter ({ component: Component , ...rest }) {
 
     const user = getStorage('admin-user');
 
-    if(rest.path === '/'){
-        auth = false;
-    }
-
-    if(user) {
-        console.log(user.role);
-        console.log(rest);
-
+    if(user) { /* 已经登陆的情况下 */
+        /* 不能进入登陆页面 */
         if(rest.path === '/login') {
             auth = false;
         }
+        /* 当作为游客进入页面的时候 */
         if(user.role === 'visitor'){
+            /* 游客不能进入order页面 */
             if(rest.location.pathname === '/admin/order'){
-                console.log('in');
                 auth = false;
             }
         }
-    }else {
-        if(_.indexOf(loginPass,rest.location.pathname) >= 0){
+    }else {/* 没有登陆的情况下 */
+        /* 如果在进入已经设置好的页面时，重定向到登陆页面 */
+        if(_.indexOf(loginPass,rest.location.pathname) < 0){
             auth = false;
             pathTarget = '/login';
         }

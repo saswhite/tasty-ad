@@ -23,6 +23,7 @@ export default function Order () {
 
     let dispatch = useDispatch();
 
+    /* 图表默认设置 */
     const defaultOption = {
         title:{
             text: '订单量',
@@ -43,6 +44,7 @@ export default function Order () {
         },
     };
 
+    /* 订单量折线图与饼图设置 */
     const numOption = {
         title:{
             text: '订单量',
@@ -89,6 +91,7 @@ export default function Order () {
         ]
     };
 
+    /* 订单人群饼图设置 */
     const personOption = {
         title:{
             text: '订单人群',

@@ -33,7 +33,9 @@ export default function Menu () {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        /* 获取餐馆信息 */
         dispatch(sendRequestRest());
+        /* 清除食品列表 */
         dispatch(clearList());
     }, []);
 
@@ -59,6 +61,7 @@ export default function Menu () {
         }
     });
 
+    /* 过滤器主体设置 */
     let filterMain = ({ setSelectedKeys, selectedKeys ,clearFilters })=>{
         return (
             <div>
@@ -108,6 +111,7 @@ export default function Menu () {
         });
     };
 
+    /* 列表中每项数据设置 */
     const columns = [
         {
             title: '菜品',

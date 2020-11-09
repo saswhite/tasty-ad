@@ -21,6 +21,7 @@ export function removeStorage (key){
     localStorage.removeItem(key);
 }
 
+/* 根据传入的数字返回星期几 */
 export function getWeek (week){
 
     switch (week) {

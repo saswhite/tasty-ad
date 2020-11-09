@@ -14,10 +14,11 @@ import { Tag } from 'antd';
 
 const Tags = memo(()=> {
 
-    let restItem = useSelector(restInfo);
+    const restItem = useSelector(restInfo);
 
-    let dispatch = useDispatch();
+    const dispatch = useDispatch();
 
+    /* 根据默认返回随机颜色的标签 */
     let renderHasTags = ()=>{
         return _.map(restItem.tags,tag => {
             let color = colorList[parseInt(Math.random() * colorList.length)];
@@ -34,6 +35,7 @@ const Tags = memo(()=> {
         });
     };
 
+    /* 标签删除 */
     let handleClose = (tag)=>{
         dispatch(closeTags(_.indexOf(restItem.tags,tag)));
     };

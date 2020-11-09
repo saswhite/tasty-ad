@@ -25,6 +25,7 @@ export default function Restaurant () {
     const user = getStorage('admin-user');
 
     useEffect(() => {
+        /* 获取餐馆数据 */
         dispatch(sendRequestRest());
     }, []);
 

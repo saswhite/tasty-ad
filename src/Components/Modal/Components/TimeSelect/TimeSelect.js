@@ -16,10 +16,11 @@ import { restInfo,updateDateTime } from '../../../../Redux/Reducer/modal';
 
 let  TimeSelect = memo(()=> {
 
-    let restItem = useSelector(restInfo);
+    const restItem = useSelector(restInfo);
 
-    let dispatch = useDispatch();
+    const dispatch = useDispatch();
 
+    /* 返回时间选择器 */
     let renderTimeSelect = ()=>{
         let clone =  _.cloneDeep(restItem.hours);
         while(clone.length < 7){
@@ -42,7 +43,6 @@ let  TimeSelect = memo(()=> {
                             }else {
                                 week = 0;
                             }
-
                             let data = {
                                 type: 'delivery',
                                 dayOfWeek:week,

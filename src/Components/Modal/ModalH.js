@@ -28,7 +28,6 @@ export default function ModalH () {
     let [ confirmLoading,setConfirmLoading ] = useState(false);
     let [ timer,setTimer ] = useState(null);
     let [ dateT,setDateT ] = useState(moment.tz('America/New_York').clone().format('YYYY-MM-DD HH:mm:ss'));
-    // let [ restTitle,setRestTitle ] = useState('');
 
     let visible = useSelector(isShow);
     let lan = useSelector(initLan);
@@ -36,7 +35,7 @@ export default function ModalH () {
     let restItem = useSelector(restInfo);
     let restTitle = useSelector(restName);
 
-    let dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         /* 获取所有标签 */
@@ -62,7 +61,6 @@ export default function ModalH () {
     /* modal框的ok按钮 */
     let handleOk = () => {
         setConfirmLoading(true);
-
         let clone = _.cloneDeep(restItem);
         clone.name[lan] = restTitle[lan];
         restItem = clone;
