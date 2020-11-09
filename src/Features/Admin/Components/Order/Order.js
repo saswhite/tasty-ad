@@ -1,8 +1,6 @@
 import React,{ useState } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import { useDispatch,useSelector } from 'react-redux';
-// import moment from 'moment';
-// import _ from 'lodash';
 
 /* anted */
 import { DatePicker } from 'antd';
@@ -14,6 +12,9 @@ import './order.scss';
 /* action */
 import { rquestOrderData,numInfo,perInfo } from '../Order/state/reducer';
 
+/* common */
+import { defaultNumOption,defaultPerOption } from '../../../../Common/defaultOption';
+
 export default function Order () {
 
     let numData = useSelector(numInfo);
@@ -23,27 +24,6 @@ export default function Order () {
 
     let dispatch = useDispatch();
 
-    /* 图表默认设置 */
-    const defaultOption = {
-        title:{
-            text: '订单量',
-            textStyle:{
-                color:'#fff'
-            }
-        },
-        backgroundColor: '#5b5c6e',
-        xAxis: {
-            type: 'category',
-            axisTick: {
-                show: false
-            },
-        }
-        ,
-        yAxis:{
-            gridIndex: 0
-        },
-    };
-
     /* 订单量折线图与饼图设置 */
     const numOption = {
         title:{
@@ -52,7 +32,7 @@ export default function Order () {
                 color:'#fff'
             }
         },
-        grid: { width: '45%' },
+        grid: { right:'50%' },
         backgroundColor: '#5b5c6e',
         dataset:{
             source: numData
@@ -131,7 +111,7 @@ export default function Order () {
             </div>
             <div className="order-chart">
                 <ReactEcharts
-                    option={ isChange && numData.length != 0 ? numOption : defaultOption }
+                    option={ isChange  ? numOption : defaultNumOption }
                     notMerge={ true }
                     lazyUpdate={ true }
                     theme={ 'dark' }
@@ -139,7 +119,7 @@ export default function Order () {
             </div>
             <div className="order-chart">
                 <ReactEcharts
-                    option={ personOption }
+                    option={ isChange ? personOption : defaultPerOption }
                     notMerge={ true }
                     lazyUpdate={ true }
                     theme={ 'dark' }
