@@ -47,8 +47,12 @@
   color : hsla(0,0%,100%,.45);
 }
 
+.ant-layout-header{
+  background-color : #1F1F1F !important;
+}
 
-.logo {
+.main-sider{
+  .logo {
     display : flex;
     align-items : center;
     justify-content : center;
@@ -58,4 +62,11 @@
       height : 60px;
       filter : invert(100%) sepia(0) saturate(5338%) hue-rotate(117deg) brightness(110%) contrast(101%);
     }
+  }
+  .logout-btn{
+    position : absolute;
+    top : 680px;
+    left : 50%;
+    transform : translateX(-50%);
+  }
 }

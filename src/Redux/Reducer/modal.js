@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { tags } from '../../Request/modal';
-import { showErrorAsync } from '../Reducer/error';
 import _ from 'lodash';
 import { restaurant,updateRest } from '../../Request/restaurant';
 import { updateRestList } from '../../Features/Admin/Components/Restaurant/state/reducer';
+import { message } from 'antd';
 
 export const modalSlice = createSlice({
     name: 'modal',
@@ -94,7 +94,7 @@ export const sendRequestTags = ()=>{
 
         } catch (error) {
 
-            dispatch(showErrorAsync(error.message));
+            message.error(error.message);
         }
     };
 };
@@ -109,7 +109,7 @@ export const updateRestInfo = (data)=>{
             dispatch(updateRestList(restRes));
 
         } catch (error) {
-            dispatch(showErrorAsync(error.message));
+            message.error(error.message);
         }
     };
 };

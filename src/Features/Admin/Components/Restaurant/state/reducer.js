@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { restaurant,updateRest } from '../../../../../Request/restaurant';
-import { showErrorAsync } from '../../../../../Redux/Reducer/error';
 import { showLoading,hideLoading } from '../../../../../Redux/Reducer/loading';
+import { message } from 'antd';
 
 export const restSlice = createSlice({
     name: 'restaurant',
@@ -25,13 +25,16 @@ export const sendRequestRest = ()=>{
     return async (dispatch)=>{
 
         try {
+            dispatch(showLoading());
             const restRes = await restaurant();
 
             dispatch(renderRestList(restRes));
 
         } catch (error) {
 
-            dispatch(showErrorAsync(error.message));
+            message.error(error.message);
+        }finally{
+            dispatch(hideLoading());
         }
     };
 };
@@ -47,7 +50,7 @@ export const postUpdateRest = (item)=>{
             dispatch(updateRestList(restRes));
 
         } catch (error) {
-            dispatch(showErrorAsync(error.message));
+            message.error(error.message);
         }finally{
             dispatch(hideLoading());
         }

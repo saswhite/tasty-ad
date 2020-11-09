@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { showErrorAsync } from '../../../../../Redux/Reducer/error';
 import { order } from '../../../../../Request/order';
 import { showLoading,hideLoading } from '../../../../../Redux/Reducer/loading';
 import moment from 'moment';
 import _ from 'lodash';
+import { message } from 'antd';
 
 export const orderSlice = createSlice({
     name: 'menu',
@@ -54,7 +54,7 @@ export const rquestOrderData = (date)=>{
             dispatch(setNumData(orderRes));
             dispatch(setPerData(orderRes));
         } catch (error) {
-            dispatch(showErrorAsync(error.message));
+            message.error(error.message);
         }finally{
             dispatch(hideLoading());
         }

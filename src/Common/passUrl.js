@@ -1,0 +1,1 @@
+export  const loginPass = [ '/admin','/admin/restaurant','/admin/menu','/' ];

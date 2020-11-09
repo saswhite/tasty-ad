@@ -16,6 +16,11 @@ export function getStorage (key) {
     }
 }
 
+/* 从localstorage去除指定的值 */
+export function removeStorage (key){
+    localStorage.removeItem(key);
+}
+
 export function getWeek (week){
 
     switch (week) {

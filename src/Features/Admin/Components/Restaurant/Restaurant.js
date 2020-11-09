@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 /* common */
 import { colorList } from '../../../../Common/color_list';
+import { getStorage } from '../../../../Common/utils';
 
 /* style */
 import './restaurant.scss';
@@ -17,9 +18,11 @@ import { showModal } from '../../../../Redux/Reducer/modal';
 
 export default function Restaurant () {
 
-    let rest = useSelector(restList);
+    const rest = useSelector(restList);
 
-    let dispatch = useDispatch();
+    const dispatch = useDispatch();
+
+    const user = getStorage('admin-user');
 
     useEffect(() => {
         dispatch(sendRequestRest());
@@ -66,6 +69,7 @@ export default function Restaurant () {
                             dispatch(showModal(el.clone));
                         }
                     }
+                    disabled={ user.role === 'employee' || user.role === 'visitor' ? true : false }
                 >操作</Button>
             ),
         },
@@ -76,6 +80,7 @@ export default function Restaurant () {
                 <Switch
                     onChange={ (checked)=>{ hangdleClose(checked,v.clone);} }
                     checked={ v.closed ? true : false }
+                    disabled={ user.role === 'employee' || user.role === 'visitor' ? true : false }
                 ></Switch>
             ),
         },

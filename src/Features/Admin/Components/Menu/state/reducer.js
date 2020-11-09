@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { showErrorAsync } from '../../../../../Redux/Reducer/error';
 import { Food ,setAvailable } from '../../../../../Request/menu';
 import { showLoading,hideLoading } from '../../../../../Redux/Reducer/loading';
+import { message } from 'antd';
 
 export const menuSlice = createSlice({
     name: 'menu',
@@ -32,12 +32,15 @@ export const { renderFoodList,renderTotal,setRest,clearList } = menuSlice.action
 export const rquestFoodList = (data)=>{
     return async (dispatch)=>{
         try {
+            dispatch(showLoading());
             let foodRes = await Food(data);
             dispatch(renderFoodList(foodRes.list));
             dispatch(renderTotal(foodRes.count));
 
         } catch (error) {
-            dispatch(showErrorAsync(error.message));
+            message.error(error.message);
+        }finally{
+            dispatch(hideLoading());
         }
     };
 };
@@ -51,7 +54,7 @@ export const updateFood = (data,pageIn)=>{
             dispatch(renderTotal(foodRes.count));
 
         } catch (error) {
-            dispatch(showErrorAsync(error.message));
+            message.error(error.message);
         }finally{
             dispatch(hideLoading());
         }

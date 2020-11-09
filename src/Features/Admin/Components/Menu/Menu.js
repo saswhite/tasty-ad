@@ -14,18 +14,23 @@ import './menu.scss';
 import { sendRequestRest,restList } from '../Restaurant/state/reducer';
 import { foods,totalF,restTar,rquestFoodList,setRest,updateFood ,clearList } from '../Menu/state/reducer';
 
+/* common */
+import { getStorage } from '../../../../Common/utils';
+
 export default function Menu () {
 
-    let rest = useSelector(restList);
-    let foodList = useSelector(foods);
-    let totalFoods = useSelector(totalF);
-    let restT = useSelector(restTar);
+    const user = getStorage('admin-user');
 
-    let [ filterValue,setFilterValue ] = useState('');
-    let [ pageInfo,setPageInfo ] = useState({});
-    let [ pageSize,setPageSize ] = useState(10);
+    const rest = useSelector(restList);
+    const foodList = useSelector(foods);
+    const totalFoods = useSelector(totalF);
+    const restT = useSelector(restTar);
 
-    let dispatch = useDispatch();
+    const [ filterValue,setFilterValue ] = useState('');
+    const [ pageInfo,setPageInfo ] = useState({});
+    const [ pageSize,setPageSize ] = useState(10);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(sendRequestRest());
@@ -127,8 +132,8 @@ export default function Menu () {
                         let newData = { ...clone,available:newStatus };
                         let newPageInfo = { ...pageInfo,keyword:filterValue };
                         dispatch(updateFood(newData,newPageInfo));
-
                     } }
+                    disabled={ user.role === 'employee' || user.role === 'visitor' ? true : false }
                 />
             ),
         },

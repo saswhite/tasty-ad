@@ -1,11 +1,12 @@
 import React,{ useState } from 'react';
-import { Switch,Route,Link,useRouteMatch,useLocation } from 'react-router-dom';
+import { Switch,Route,Link,useRouteMatch,useLocation,useHistory } from 'react-router-dom';
 
 /* style */
 import './admin.scss';
 
 /* common */
 import { LOGO_URL } from '../../Common/img_url';
+import { removeStorage,getStorage } from '../../Common/utils';
 
 /* component */
 import menuCom from './Components/Menu/Menu';
@@ -13,11 +14,14 @@ import restCom from './Components/Restaurant/Restaurant';
 import orderCom from './Components/Order/Order';
 
 /* anted */
-import { Layout,Breadcrumb,Menu } from 'antd';
+import { Layout,Breadcrumb,Menu ,Button } from 'antd';
 import { PieChartOutlined,DesktopOutlined } from '@ant-design/icons';
 const { Header, Sider, Content,Footer } = Layout;
 
 export default function Admin () {
+
+    const history = useHistory();
+    const user = getStorage('admin-user');
 
     const [ collapsed,setCollapsed ] = useState(false);
 
@@ -51,7 +55,11 @@ export default function Admin () {
     return (
         <div className="admin">
             <Layout style={{ minHeight : '100vh' }}>
-                <Sider collapsible collapsed={ collapsed } onCollapse={ onCollapse } className="bgc-1F">
+                <Sider
+                    collapsible
+                    collapsed={ collapsed }
+                    onCollapse={ onCollapse }
+                    className="bgc-1F main-sider">
                     <div className="logo" >
                         <img  src={ LOGO_URL } className="logo-img"/>
                     </div>
@@ -62,10 +70,16 @@ export default function Admin () {
                         <Menu.Item key="2" icon={ <DesktopOutlined /> }>
                             <Link to={ `${url}/menu` }>菜单</Link>
                         </Menu.Item>
-                        <Menu.Item key="3" icon={ <DesktopOutlined /> }>
+                        {user.role != 'visitor' ? <Menu.Item key="3" icon={ <DesktopOutlined /> }>
                             <Link to={ `${url}/order` }>订单</Link>
-                        </Menu.Item>
+                        </Menu.Item> : null}
                     </Menu>
+                    <Button
+                        className="logout-btn"
+                        onClick={ ()=>{
+                            removeStorage('admin-user');
+                            history.push('/login');
+                        } }>登出</Button>
                 </Sider>
                 <Layout className="site-layout bgc-00">
                     <Header className="site-layout-background bgc-1F" style={{ padding : 0 }} />

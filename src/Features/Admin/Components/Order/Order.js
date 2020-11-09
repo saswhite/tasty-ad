@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import { useDispatch,useSelector } from 'react-redux';
 // import moment from 'moment';
@@ -19,7 +19,29 @@ export default function Order () {
     let numData = useSelector(numInfo);
     let perData = useSelector(perInfo);
 
+    const [ isChange,setIsChange ] = useState(false);
+
     let dispatch = useDispatch();
+
+    const defaultOption = {
+        title:{
+            text: '订单量',
+            textStyle:{
+                color:'#fff'
+            }
+        },
+        backgroundColor: '#5b5c6e',
+        xAxis: {
+            type: 'category',
+            axisTick: {
+                show: false
+            },
+        }
+        ,
+        yAxis:{
+            gridIndex: 0
+        },
+    };
 
     const numOption = {
         title:{
@@ -28,7 +50,7 @@ export default function Order () {
                 color:'#fff'
             }
         },
-        grid: { width: '50%' },
+        grid: { width: '45%' },
         backgroundColor: '#5b5c6e',
         dataset:{
             source: numData
@@ -48,7 +70,6 @@ export default function Order () {
                 type: 'line',
                 smooth: true,
                 symbol: 'circle',
-                position: 'rigth',
                 symbolSize: 7,
                 lineStyle: {
                     color: '#9B8BBB'
@@ -88,35 +109,6 @@ export default function Order () {
         }
     };
 
-    /* 订单量数据 */
-    // let renderNumData = ()=>{
-    //     let arr = [];
-    //     _.forEach(orderData,(item)=>{
-    //         arr.push(moment(item.createdAt).format('YYYY-MM-DD'));
-    //     });
-    //     let numSource = [];
-    //     _.forIn(_.groupBy(arr),(value,key)=>{
-    //         numSource.push([ key,value.length ]);
-    //     });
-    //     setNumData(numSource);
-    //     console.log(numSource);
-    // };
-
-    /* 订单人群数据 */
-    // let renderPersonData = ()=>{
-    //     console.log(orderData);
-    //     let arr = [];
-    //     _.forEach(orderData,(item)=>{
-    //         arr.push(item.user.username);
-    //     });
-    //     let perSource = [];
-    //     _.forIn(_.groupBy(arr),(value,key)=>{
-    //         perSource.push([ key,value.length ]);
-    //     });
-    //     setPerData(perSource);
-    //     console.log(perSource);
-    // };
-
     return (
         <div>
             <div className="order-container">
@@ -127,11 +119,12 @@ export default function Order () {
                             start: dates[0]._d.toISOString(),
                             end: dates[1]._d.toISOString()
                         }));
+                        setIsChange(true);
                     } }/>
             </div>
             <div className="order-chart">
                 <ReactEcharts
-                    option={ numOption }
+                    option={ isChange && numData.length != 0 ? numOption : defaultOption }
                     notMerge={ true }
                     lazyUpdate={ true }
                     theme={ 'dark' }
