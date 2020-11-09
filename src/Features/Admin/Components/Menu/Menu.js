@@ -49,20 +49,12 @@ export default function Menu () {
     };
 
     /* 自定义过滤器 */
-    let renderFilter = (dataIndex)=>({
-        filterDropdown:filterMain,
-        onFilter: (value, record) =>{
-            let pattern = /[\u4e00-\u9fa5]/g;
-            if(pattern.test(value)){
-                return record[dataIndex].indexOf(value) >= 0;
-            } else {
-                return record[dataIndex].toLowerCase().indexOf(value.toLowerCase()) >= 0;
-            }
-        }
+    let renderFilter = ()=>({
+        filterDropdown:filterMain
     });
 
     /* 过滤器主体设置 */
-    let filterMain = ({ setSelectedKeys, selectedKeys ,clearFilters,confirm })=>{
+    let filterMain = ({ setSelectedKeys, selectedKeys ,clearFilters })=>{
         return (
             <div>
                 <Input
@@ -71,13 +63,13 @@ export default function Menu () {
                         setFilterValue(e.target.value);
                         return setSelectedKeys(e.target.value ? [ e.target.value ] : []);
                     } }
-                    onPressEnter={ ()=>{ handleSearch(selectedKeys,clearFilters,confirm); } }
+                    onPressEnter={ ()=>{ handleSearch(selectedKeys,clearFilters); } }
                 />
                 <Space>
                     <Button
                         size="small"
                         style={{ width : 90 }}
-                        onClick={ ()=>{ handleSearch(selectedKeys,clearFilters,confirm); } }
+                        onClick={ ()=>{ handleSearch(selectedKeys,clearFilters); } }
                     >
                       搜索
                     </Button>
@@ -87,8 +79,7 @@ export default function Menu () {
     };
 
     /* 处理过滤搜索 */
-    let handleSearch = (selectedKeys,clearFilters,confirm)=>{
-        confirm();
+    let handleSearch = (selectedKeys,clearFilters)=>{
         let nPageInfo  = {};
         if(selectedKeys.length > 0){
             nPageInfo = {

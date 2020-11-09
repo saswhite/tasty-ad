@@ -2,9 +2,6 @@ import axios from 'axios';
 import _ from 'lodash';
 import CustomError from './CustomError';
 
-/* 30 sec timeout */
-axios.defaults.timeout = 3000;
-
 /**
  * request
  */

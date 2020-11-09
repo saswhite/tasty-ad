@@ -78,7 +78,11 @@ export default function Order () {
                 },
                 itemStyle: {
                     color: '#9B8BBB'
-                }
+                },
+                label: {
+                    show:true,
+                    formatter: '{@[1]}'
+                },
             },
             {
                 type: 'pie',
