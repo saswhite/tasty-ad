@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 /* common */
 import { getStorage } from '../Common/utils';
-import { loginPass } from '../Common/passUrl';
+import { loginPass } from '../Common/config';
 
 export default function PrivateRouter ({ component: Component , ...rest }) {
 

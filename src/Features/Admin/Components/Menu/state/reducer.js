@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { Food ,setAvailable } from '../../../../../Request/menu';
 import { showLoading,hideLoading } from '../../../../../Redux/Reducer/loading';
 import { message } from 'antd';
+import _ from 'lodash';
 
 export const menuSlice = createSlice({
     name: 'menu',
@@ -48,7 +49,13 @@ export const updateFood = (data,pageIn)=>{
     return async (dispatch)=>{
         try {
             dispatch(showLoading());
-            await setAvailable(data);
+            let newData = {
+                id: data._id,
+                data:{
+                    ..._.omit(data,'_id')
+                }
+            };
+            await setAvailable(newData);
             let foodRes = await Food(pageIn);
             dispatch(renderFoodList(foodRes.list));
             dispatch(renderTotal(foodRes.count));

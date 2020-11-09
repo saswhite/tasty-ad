@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 import { useSelector,useDispatch } from 'react-redux';
 
 /* common */
-import { colorList } from '../../../../Common/color_list';
+import { colorList } from '../../../../Common/config';
 
 /* action */
 import { restInfo,closeTags } from '../../../../Redux/Reducer/modal';

@@ -3,7 +3,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import _ from 'lodash';
 
 /* common */
-import { colorList } from '../../../../Common/color_list';
+import { colorList } from '../../../../Common/config';
 import { getStorage } from '../../../../Common/utils';
 
 /* style */

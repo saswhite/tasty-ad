@@ -5,7 +5,7 @@ import { Switch,Route,Link,useRouteMatch,useLocation,useHistory } from 'react-ro
 import './admin.scss';
 
 /* common */
-import { LOGO_URL } from '../../Common/img_url';
+import { LOGO_URL } from '../../Common/config';
 import { removeStorage,getStorage } from '../../Common/utils';
 
 /* component */
