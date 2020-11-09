@@ -9,6 +9,8 @@
     "@testing-library/user-event": "^7.1.2",
     "antd": "^4.8.0",
     "axios": "^0.21.0",
+    "echarts": "^4.9.0",
+    "echarts-for-react": "^2.0.16",
     "eslint-plugin-react-app": "^6.2.2",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",

@@ -1,0 +1,10 @@
+.order-container {
+  display : flex;
+  justify-content : flex-start;
+  .order-time-select {
+    min-width : 55vw;
+  }
+}
+.order-chart{
+  margin-top : 50px;
+}

@@ -43,6 +43,8 @@ export default function Admin () {
             return '1';
         }else if(location.pathname.split('/')[2] === 'menu'){
             return '2';
+        }else {
+            return '3';
         }
     };
 
