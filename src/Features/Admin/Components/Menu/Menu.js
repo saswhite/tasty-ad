@@ -52,17 +52,17 @@ export default function Menu () {
     let renderFilter = (dataIndex)=>({
         filterDropdown:filterMain,
         onFilter: (value, record) =>{
-            let pattern = /[\u4e00-\u9fa5]/gm;
+            let pattern = /[\u4e00-\u9fa5]/g;
             if(pattern.test(value)){
                 return record[dataIndex].indexOf(value) >= 0;
-            }else {
+            } else {
                 return record[dataIndex].toLowerCase().indexOf(value.toLowerCase()) >= 0;
             }
         }
     });
 
     /* 过滤器主体设置 */
-    let filterMain = ({ setSelectedKeys, selectedKeys ,clearFilters })=>{
+    let filterMain = ({ setSelectedKeys, selectedKeys ,clearFilters,confirm })=>{
         return (
             <div>
                 <Input
@@ -71,13 +71,13 @@ export default function Menu () {
                         setFilterValue(e.target.value);
                         return setSelectedKeys(e.target.value ? [ e.target.value ] : []);
                     } }
-                    onPressEnter={ ()=>{ handleSearch(selectedKeys,clearFilters); } }
+                    onPressEnter={ ()=>{ handleSearch(selectedKeys,clearFilters,confirm); } }
                 />
                 <Space>
                     <Button
                         size="small"
                         style={{ width : 90 }}
-                        onClick={ ()=>{ handleSearch(selectedKeys,clearFilters); } }
+                        onClick={ ()=>{ handleSearch(selectedKeys,clearFilters,confirm); } }
                     >
                       搜索
                     </Button>
@@ -87,12 +87,18 @@ export default function Menu () {
     };
 
     /* 处理过滤搜索 */
-    let handleSearch = (selectedKeys,clearFilters)=>{
-        // confirm();
-        let nPageInfo = {
-            ...pageInfo,
-            keyword:selectedKeys[0]
-        };
+    let handleSearch = (selectedKeys,clearFilters,confirm)=>{
+        confirm();
+        let nPageInfo  = {};
+        if(selectedKeys.length > 0){
+            nPageInfo = {
+                ...pageInfo,
+                keyword:selectedKeys[0]
+            };
+
+        }else {
+            nPageInfo = pageInfo;
+        }
         dispatch(rquestFoodList(nPageInfo));
         clearFilters();
     };
