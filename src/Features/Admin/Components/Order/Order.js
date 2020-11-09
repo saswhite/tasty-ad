@@ -111,7 +111,7 @@ export default function Order () {
             </div>
             <div className="order-chart">
                 <ReactEcharts
-                    option={ isChange  ? numOption : defaultNumOption }
+                    option={ isChange && numData.length != 0  ? numOption : defaultNumOption }
                     notMerge={ true }
                     lazyUpdate={ true }
                     theme={ 'dark' }
