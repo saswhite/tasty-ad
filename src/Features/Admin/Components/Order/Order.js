@@ -67,7 +67,7 @@ export default function Order () {
             {
                 type: 'pie',
                 radius: '50%',
-                center: [ '80%', '50%' ],
+                center: [ '75%', '50%' ],
                 label: {
                     formatter: '{b}: {@[1]} ({d}%)'
                 }

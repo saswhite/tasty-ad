@@ -38,7 +38,7 @@ export default function Admin () {
     /* 对当前url地址的处理 */
     let renderLocation = ()=>{
         let title = location.pathname;
-        return title.split('/')[2].charAt(0).toUpperCase() + title.split('/')[2].slice(1);
+        return title != '/admin' ? title.split('/')[2].charAt(0).toUpperCase() + title.split('/')[2].slice(1) : '';
     };
 
     /* 设置默认的key */

@@ -17,7 +17,7 @@ export default function PrivateRouter ({ component: Component , ...rest }) {
 
     if(user) { /* 已经登陆的情况下 */
         /* 不能进入登陆页面 */
-        if(rest.path === '/login') {
+        if(rest.path === '/login' || rest.location.pathname === '/admin') {
             auth = false;
         }
         /* 当作为游客进入页面的时候 */
