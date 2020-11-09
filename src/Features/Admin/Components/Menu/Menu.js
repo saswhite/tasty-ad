@@ -97,7 +97,10 @@ export default function Menu () {
             };
 
         }else {
-            nPageInfo = pageInfo;
+            nPageInfo.id = pageInfo.id;
+            nPageInfo.page = 1;
+            nPageInfo.limit = pageSize;
+            nPageInfo.keyword = '';
         }
         dispatch(rquestFoodList(nPageInfo));
         clearFilters();
