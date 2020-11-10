@@ -16,10 +16,12 @@ import { foods,totalF,restTar,rquestFoodList,setRest,updateFood ,clearList } fro
 
 /* common */
 import { getStorage } from '../../../../Common/utils';
+import { useUserRole } from '../../../../Common/diyHook';
 
 export default function Menu () {
 
     const user = getStorage('admin-user');
+    const role = useUserRole(user);
 
     const rest = useSelector(restList);
     const foodList = useSelector(foods);
@@ -43,7 +45,7 @@ export default function Menu () {
     let renderTotalRestName = ()=>{
         return _.map(rest,(item)=>{
             return (
-                <Option value={ item.name['en-US'] } key={ item._id }>{item.name['zh-CN']}</Option>
+                <Option value={ item._id } key={ item._id }>{item.name['zh-CN']}</Option>
             );
         });
     };
@@ -92,6 +94,7 @@ export default function Menu () {
             nPageInfo.page = 1;
             nPageInfo.limit = pageSize;
             nPageInfo.keyword = '';
+            setFilterValue('');
         }
         dispatch(rquestFoodList(nPageInfo));
         clearFilters();
@@ -137,7 +140,7 @@ export default function Menu () {
                         let newPageInfo = { ...pageInfo,keyword:filterValue };
                         dispatch(updateFood(newData,newPageInfo));
                     } }
-                    disabled={ user.role === 'employee' || user.role === 'visitor' ? true : false }
+                    disabled={ role }
                 />
             ),
         },
@@ -153,16 +156,13 @@ export default function Menu () {
                     style={{ width : '200px' }}
                     className="left"
                     onChange={ (v)=>{
-                        let data = {};
-                        _.forEach(rest,(item)=>{
-                            if(item.name['en-US'] === v){
-                                data.id = item._id;
-                                data.page = 1;
-                                data.limit = pageSize;
-                                data.keyword = '';
-                                dispatch(setRest(item));
-                            }
-                        });
+                        let data = {
+                            id: v,
+                            page: 1,
+                            limit: pageSize,
+                            keyword:''
+                        };
+                        dispatch(setRest(v));
                         setPageInfo(data);
                         dispatch(rquestFoodList(data));
                     } }
@@ -184,7 +184,7 @@ export default function Menu () {
                     onChange={ (pagination)=>{
                         setPageSize(pagination.pageSize);
                         let data = {
-                            id: restT._id,
+                            id: restT,
                             page: pagination.current,
                             limit: pagination.pageSize,
                             keyword: filterValue

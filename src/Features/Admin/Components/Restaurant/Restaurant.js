@@ -3,8 +3,9 @@ import { useSelector,useDispatch } from 'react-redux';
 import _ from 'lodash';
 
 /* common */
-import { colorList } from '../../../../Common/color_list';
+import { colorList } from '../../../../Common/config';
 import { getStorage } from '../../../../Common/utils';
+import { useUserRole } from '../../../../Common/diyHook';
 
 /* style */
 import './restaurant.scss';
@@ -23,6 +24,7 @@ export default function Restaurant () {
     const dispatch = useDispatch();
 
     const user = getStorage('admin-user');
+    const role = useUserRole(user);
 
     useEffect(() => {
         /* 获取餐馆数据 */
@@ -70,7 +72,7 @@ export default function Restaurant () {
                             dispatch(showModal(el.clone));
                         }
                     }
-                    disabled={ user.role === 'employee' || user.role === 'visitor' ? true : false }
+                    disabled={ role }
                 >操作</Button>
             ),
         },
@@ -81,7 +83,7 @@ export default function Restaurant () {
                 <Switch
                     onChange={ (checked)=>{ hangdleClose(checked,v.clone);} }
                     checked={ v.closed ? true : false }
-                    disabled={ user.role === 'employee' || user.role === 'visitor' ? true : false }
+                    disabled={ role }
                 ></Switch>
             ),
         },
@@ -104,19 +106,11 @@ export default function Restaurant () {
 
     /* 手动关闭 */
     let hangdleClose = (checked,item)=>{
-        if(checked){
-            dispatch(postUpdateRest({
-                ...item,
-                closed:{
-                    closed:true
-                }
-            }));
-        }else {
-            dispatch(postUpdateRest({
-                ...item,
-                closed: null
-            }));
-        }
+        let closed = checked ? { closed:true } : null;
+        dispatch(postUpdateRest({
+            ...item,
+            closed: closed
+        }));
     };
 
     return (

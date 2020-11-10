@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { restaurant,updateRest } from '../../../../../Request/restaurant';
+import { restaurant ,updateRest } from '../../../../../Request/restaurant';
 import { showLoading,hideLoading } from '../../../../../Redux/Reducer/loading';
 import { message } from 'antd';
+import _ from 'lodash';
 
 export const restSlice = createSlice({
     name: 'restaurant',
@@ -43,8 +44,14 @@ export const postUpdateRest = (item)=>{
     return async (dispatch)=>{
         try {
             dispatch(showLoading());
-
-            await updateRest(item);
+            let newData = {
+                id:item._id,
+                data:{
+                    ..._.omit(item,'_id')
+                }
+            };
+            console.log(newData);
+            await updateRest(newData);
             const restRes = await restaurant();
 
             dispatch(updateRestList(restRes));

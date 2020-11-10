@@ -31,12 +31,15 @@ export const orderSlice = createSlice({
         setPerData :(state, action) => {
             let arr = [];
             _.forEach(action.payload,(item)=>{
-                arr.push(item.user.username);
+                if(item.user) {
+                    arr.push(item.user.username);
+                }
             });
             let perSource = [];
             _.forIn(_.groupBy(arr),(value,key)=>{
                 perSource.push([ key,value.length ]);
             });
+            console.log(perSource);
             state.perData = perSource;
         },
     },

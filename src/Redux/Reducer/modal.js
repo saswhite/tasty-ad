@@ -102,8 +102,13 @@ export const sendRequestTags = ()=>{
 export const updateRestInfo = (data)=>{
     return async (dispatch)=>{
         try {
-
-            await updateRest(data);
+            let newData = {
+                id:data._id,
+                data:{
+                    ..._.omit(data,'_id')
+                }
+            };
+            await updateRest(newData);
             const restRes = await restaurant();
 
             dispatch(updateRestList(restRes));
