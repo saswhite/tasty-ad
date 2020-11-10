@@ -35,13 +35,10 @@ export default function Admin ({ routes }) {
     /* crumb */
     let renderLocation = ()=>{
         let title = location.pathname;
-        console.log(title.split('/'));
         return _.map(title.split('/'),(item,index)=>{
             console.log(_.capitalize(item));
-            if(index === 1){
-                return (<Breadcrumb.Item key={ v4() } className="col-45 fw">{_.capitalize(item)}</Breadcrumb.Item>);
-            } else if(index > 1){
-                return ( <Breadcrumb.Item key={ v4() } className="col-85 fw">{_.capitalize(item)}</Breadcrumb.Item>);
+            if(index >= 1){
+                return (<Breadcrumb.Item key={ v4() } className={ `${index === 1 ? 'col-45' : 'col-85'} fw` }>{_.capitalize(item)}</Breadcrumb.Item>);
             }
         });
     };
