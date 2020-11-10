@@ -1,4 +1,4 @@
-import React,{ useState,useEffect } from 'react';
+import React,{ useState } from 'react';
 import { Switch,Link,useLocation,useHistory,useRouteMatch,Redirect } from 'react-router-dom';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -18,11 +18,6 @@ const { Header, Sider, Content,Footer } = Layout;
 
 export default function Admin ({ routes }) {
 
-    useEffect(() => {
-        console.log(location);
-        console.log(match);
-    }, []);
-
     const match = useRouteMatch();
     const history = useHistory();
     const user = getStorage('admin-user');
@@ -34,25 +29,13 @@ export default function Admin ({ routes }) {
     /* 侧边栏的拉开和合拢 */
     let onCollapse = ()=>{
         setCollapsed(!collapsed);
-        console.log(location.pathname.split('/')[2]);
     };
 
-    /* 对当前url地址的处理 */
+    /* crumb */
     let renderLocation = ()=>{
         let title = location.pathname;
-        return title != '/admin' ? title.split('/')[2].charAt(0).toUpperCase() + title.split('/')[2].slice(1) : '';
+        return _.capitalize(title.slice(_.lastIndexOf(title,'/') + 1));
     };
-
-    /* 设置默认的key */
-    // let renderDefaultKey = ()=>{
-    //     if(location.pathname.split('/')[2] === 'restaurant'){
-    //         return '1';
-    //     }else if(location.pathname.split('/')[2] === 'menu'){
-    //         return '2';
-    //     }else {
-    //         return '3';
-    //     }
-    // };
 
     return (
         <div className="admin">
@@ -66,14 +49,14 @@ export default function Admin ({ routes }) {
                         <img  src={ LOGO_URL } className="logo-img"/>
                     </div>
                     <Menu theme="dark" defaultSelectedKeys={ [ `${location.pathname}` ] }  mode="inline" className="bgc-1F">
-                        <Menu.Item key="/admin/restaurant" icon={ <PieChartOutlined /> }>
-                            <Link to={ '/admin/restaurant' }>餐馆</Link>
+                        <Menu.Item key={ `${match.path}/restaurant`  } icon={ <PieChartOutlined /> }>
+                            <Link to={ `${match.path}/restaurant`  }>餐馆</Link>
                         </Menu.Item>
-                        <Menu.Item key="/admin/menu" icon={ <DesktopOutlined /> }>
-                            <Link to={ '/admin/menu' }>菜单</Link>
+                        <Menu.Item key={ `${match.path}/menu`  } icon={ <DesktopOutlined /> }>
+                            <Link to={ `${match.path}/menu`  }>菜单</Link>
                         </Menu.Item>
-                        {user.role != 'visitor' ? <Menu.Item key="/admin/order" icon={ <DesktopOutlined /> }>
-                            <Link to={ '/admin/order' }>订单</Link>
+                        {user.role != 'visitor' ? <Menu.Item key={ `${match.path}/order`  } icon={ <DesktopOutlined /> }>
+                            <Link to={ `${match.path}/order`  }>订单</Link>
                         </Menu.Item> : null}
                     </Menu>
                     <Button

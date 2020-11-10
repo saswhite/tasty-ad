@@ -2,32 +2,31 @@ import React,{ useState,useEffect } from 'react';
 import { useSelector ,useDispatch } from 'react-redux';
 import _ from 'lodash';
 import { v4 } from 'uuid';
-import moment from 'moment-timezone';
-
-/* common */
-import { getWeek } from '../../Common/utils';
+import moment from 'moment';
 
 /* style */
 import './modal.scss';
 
+/* common */
+import { colorList } from '../../Common/config';
+import { getWeek } from '../../Common/utils';
+
 /* anted */
-import { Modal,Select,Input,Form } from 'antd';
+import { Modal,Select,Input,Form,Tag,Button,TimePicker } from 'antd';
 const { Option } = Select;
+const { RangePicker } = TimePicker;
 
 /* action */
 import { isShow,hideModal } from '../../Redux/Reducer/modal';
 import { initLan,setLan } from '../../Redux/Reducer/intl';
-import { tagList,restInfo,sendRequestTags,updateRestInfo,updateTags,restName,updateInputTitle } from '../../Redux/Reducer/modal';
+import { tagList,restInfo,sendRequestTags,updateRestInfo,updateTags,restName,updateInputTitle,closeTags,updateDateTime } from '../../Redux/Reducer/modal';
 
 /* components */
-import Tags from './Components/Tags/Tags';
-import TimeSelect from './Components/TimeSelect/TimeSelect';
+import TimeInterval from './Components/TimeInterval/TimeInterval';
 
 export default function ModalH () {
 
     let [ confirmLoading,setConfirmLoading ] = useState(false);
-    let [ timer,setTimer ] = useState(null);
-    let [ dateT,setDateT ] = useState(moment.tz('America/New_York').clone().format('YYYY-MM-DD HH:mm:ss'));
 
     let visible = useSelector(isShow);
     let lan = useSelector(initLan);
@@ -40,15 +39,6 @@ export default function ModalH () {
     useEffect(() => {
         /* 获取所有标签 */
         dispatch(sendRequestTags());
-        /* 自动时间 */
-        setTimer(setInterval(()=>{
-            setDateT(moment.tz('America/New_York').clone().format('YYYY-MM-DD HH:mm:ss'));
-        },1000));
-        return ()=>{
-            if(timer) {
-                setTimer(null);
-            }
-        };
     }, []);
 
     /* 所有标签选项 */
@@ -56,6 +46,65 @@ export default function ModalH () {
         return _.map(tags,(item)=>{
             return  <Option value={ item } key={ v4() }>{item}</Option>;
         });
+    };
+
+    /* 根据默认返回随机颜色的标签 */
+    let renderHasTags = ()=>{
+        return _.map(restItem.tags,tag => {
+            let color = colorList[parseInt(Math.random() * colorList.length)];
+
+            return (
+                <Tag
+                    color={ color }
+                    key={ v4() }
+                    closable
+                    onClose={  ()=>{ handleClose(tag); } }>
+                    {tag.toUpperCase()}
+                </Tag>
+            );
+        });
+    };
+
+    /* 返回时间选择器 */
+    let renderTimeSelect = ()=>{
+        let clone =  _.cloneDeep(restItem.hours);
+        while(clone.length < 7){
+            clone.push({});
+        }
+        return _.map(clone,(item,index)=>{
+
+            const d = [
+                item.start ? moment().startOf('day').add(item.start,'minutes') : moment().startOf('day'),
+                item.end ? moment().startOf('day').add(item.end,'minutes') : moment().startOf('day') ];
+            return(
+                <div key={ v4() }>
+                    <Button disabled>{getWeek(index + 1)}</Button>
+                    <RangePicker
+                        defaultValue={ d }
+                        onChange={ (v)=>{
+                            let week = 0;
+                            if(index < 6){
+                                week = index + 1;
+                            }else {
+                                week = 0;
+                            }
+                            let data = {
+                                type: 'delivery',
+                                dayOfWeek:week,
+                                start: v[0].minute() + v[0].hour() * 60,
+                                end: v[1].minute() + v[1].hour() * 60,
+                            };
+                            dispatch(updateDateTime(data));
+                        } }
+                    />
+                </div>
+            );
+        });
+    };
+
+    /* 标签删除 */
+    let handleClose = (tag)=>{
+        dispatch(closeTags(_.indexOf(restItem.tags,tag)));
     };
 
     /* modal框的ok按钮 */
@@ -74,7 +123,6 @@ export default function ModalH () {
 
     /* modal框的关闭按钮 */
     let handleCancel = () => {
-        console.log(restItem);
         dispatch(hideModal());
 
     };
@@ -139,19 +187,16 @@ export default function ModalH () {
                             style={{ marginLeft : '10px' }}
                             className="tags"
                         >
-                            <Tags></Tags>
+                            {renderHasTags()}
                         </span>
                     </Form.Item>
                     <Form.Item
                         label="开门时间："
                     >
                         <div className="time-title">纽约当地时间</div>
-                        <div className="date-main">
-                            <span>{dateT}</span>
-                            <span style={{ marginLeft : '5px' }}>{getWeek(moment.tz('America/New_York').clone().day())}</span>
-                        </div>
+                        <TimeInterval></TimeInterval>
                         <div className="time-select">
-                            <TimeSelect></TimeSelect>
+                            {renderTimeSelect()}
                         </div>
                     </Form.Item>
                 </Form>

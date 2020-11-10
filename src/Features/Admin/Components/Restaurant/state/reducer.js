@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { restaurant,updateRest } from '../../../../../Request/restaurant';
+import { restaurant ,updateRest } from '../../../../../Request/restaurant';
 import { showLoading,hideLoading } from '../../../../../Redux/Reducer/loading';
 import { message } from 'antd';
 import _ from 'lodash';
@@ -50,6 +50,7 @@ export const postUpdateRest = (item)=>{
                     ..._.omit(item,'_id')
                 }
             };
+            console.log(newData);
             await updateRest(newData);
             const restRes = await restaurant();
 

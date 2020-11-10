@@ -16,10 +16,12 @@ import { foods,totalF,restTar,rquestFoodList,setRest,updateFood ,clearList } fro
 
 /* common */
 import { getStorage } from '../../../../Common/utils';
+import { useUserRole } from '../../../../Common/diyHook';
 
 export default function Menu () {
 
     const user = getStorage('admin-user');
+    const role = useUserRole(user);
 
     const rest = useSelector(restList);
     const foodList = useSelector(foods);
@@ -137,7 +139,7 @@ export default function Menu () {
                         let newPageInfo = { ...pageInfo,keyword:filterValue };
                         dispatch(updateFood(newData,newPageInfo));
                     } }
-                    disabled={ user.role === 'employee' || user.role === 'visitor' ? true : false }
+                    disabled={ role }
                 />
             ),
         },
