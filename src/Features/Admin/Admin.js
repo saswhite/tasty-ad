@@ -1,5 +1,7 @@
-import React,{ useState } from 'react';
-import { Switch,Route,Link,useRouteMatch,useLocation,useHistory } from 'react-router-dom';
+import React,{ useState,useEffect } from 'react';
+import { Switch,Link,useLocation,useHistory,useRouteMatch,Redirect } from 'react-router-dom';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
 
 /* style */
 import './admin.scss';
@@ -7,25 +9,25 @@ import './admin.scss';
 /* common */
 import { LOGO_URL } from '../../Common/config';
 import { removeStorage,getStorage } from '../../Common/utils';
-
-/* component */
-import menuCom from './Components/Menu/Menu';
-import restCom from './Components/Restaurant/Restaurant';
-import orderCom from './Components/Order/Order';
+import PrivateRouter from '../../Common/PrivateRouter';
 
 /* anted */
 import { Layout,Breadcrumb,Menu ,Button } from 'antd';
 import { PieChartOutlined,DesktopOutlined } from '@ant-design/icons';
 const { Header, Sider, Content,Footer } = Layout;
 
-export default function Admin () {
+export default function Admin ({ routes }) {
 
+    useEffect(() => {
+        console.log(location);
+        console.log(match);
+    }, []);
+
+    const match = useRouteMatch();
     const history = useHistory();
     const user = getStorage('admin-user');
 
     const [ collapsed,setCollapsed ] = useState(false);
-
-    const { path,url } = useRouteMatch();
 
     const location = useLocation();
 
@@ -42,15 +44,15 @@ export default function Admin () {
     };
 
     /* 设置默认的key */
-    let renderDefaultKey = ()=>{
-        if(location.pathname.split('/')[2] === 'restaurant'){
-            return '1';
-        }else if(location.pathname.split('/')[2] === 'menu'){
-            return '2';
-        }else {
-            return '3';
-        }
-    };
+    // let renderDefaultKey = ()=>{
+    //     if(location.pathname.split('/')[2] === 'restaurant'){
+    //         return '1';
+    //     }else if(location.pathname.split('/')[2] === 'menu'){
+    //         return '2';
+    //     }else {
+    //         return '3';
+    //     }
+    // };
 
     return (
         <div className="admin">
@@ -63,15 +65,15 @@ export default function Admin () {
                     <div className="logo" >
                         <img  src={ LOGO_URL } className="logo-img"/>
                     </div>
-                    <Menu theme="dark" defaultSelectedKeys={ [ renderDefaultKey() ] } mode="inline" className="bgc-1F">
-                        <Menu.Item key="1" icon={ <PieChartOutlined /> }>
-                            <Link to={ `${url}/restaurant` }>餐馆</Link>
+                    <Menu theme="dark" defaultSelectedKeys={ [ `${location.pathname}` ] }  mode="inline" className="bgc-1F">
+                        <Menu.Item key="/admin/restaurant" icon={ <PieChartOutlined /> }>
+                            <Link to={ '/admin/restaurant' }>餐馆</Link>
                         </Menu.Item>
-                        <Menu.Item key="2" icon={ <DesktopOutlined /> }>
-                            <Link to={ `${url}/menu` }>菜单</Link>
+                        <Menu.Item key="/admin/menu" icon={ <DesktopOutlined /> }>
+                            <Link to={ '/admin/menu' }>菜单</Link>
                         </Menu.Item>
-                        {user.role != 'visitor' ? <Menu.Item key="3" icon={ <DesktopOutlined /> }>
-                            <Link to={ `${url}/order` }>订单</Link>
+                        {user.role != 'visitor' ? <Menu.Item key="/admin/order" icon={ <DesktopOutlined /> }>
+                            <Link to={ '/admin/order' }>订单</Link>
                         </Menu.Item> : null}
                     </Menu>
                     <Button
@@ -90,9 +92,11 @@ export default function Admin () {
                         </Breadcrumb>
                         <div className="site-layout-background" style={{ padding : 24, minHeight : 360 }}>
                             <Switch>
-                                <Route path={ `${path}/restaurant` } component={ restCom }/>
-                                <Route path={ `${path}/menu` } component={ menuCom }/>
-                                <Route path={ `${path}/order` } component={ orderCom }/>
+                                {_.map(routes,(route)=> (
+                                    <PrivateRouter { ...route } key={ Math.random() }></PrivateRouter>
+                                ))
+                                }
+                                <Redirect to={ `${match.path}/restaurant` } />
                             </Switch>
                         </div>
                     </Content>
@@ -104,3 +108,7 @@ export default function Admin () {
         </div>
     );
 }
+
+Admin.propTypes = {
+    routes: PropTypes.array
+};

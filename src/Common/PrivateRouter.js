@@ -7,8 +7,8 @@ import _ from 'lodash';
 import { getStorage } from '../Common/utils';
 import { loginPass } from '../Common/config';
 
-export default function PrivateRouter ({ component: Component , ...rest }) {
-
+export default function PrivateRouter ({ component: Component ,children,...rest }) {
+    console.log(rest,children);
     let auth = true;
 
     let pathTarget = '/admin/restaurant';
@@ -17,7 +17,7 @@ export default function PrivateRouter ({ component: Component , ...rest }) {
 
     if(user) { /* 已经登陆的情况下 */
         /* 不能进入登陆页面 */
-        if(rest.path === '/login' || rest.location.pathname === '/admin') {
+        if(rest.path === '/login' || rest.path === '/' ) {
             auth = false;
         }
         /* 当作为游客进入页面的时候 */
@@ -40,14 +40,16 @@ export default function PrivateRouter ({ component: Component , ...rest }) {
         <Route { ...rest } render={ ()=>{
             return (
 
-                auth ? <Component/> : <Redirect to={ `${pathTarget}` }></Redirect>
+                auth ? <Component routes={ children }/> : <Redirect to={ `${pathTarget}` }></Redirect>
             );
 
         } } ></Route>
 
     );
+
 }
 
 PrivateRouter.propTypes = {
-    component: PropTypes.func
+    component: PropTypes.func,
+    children: PropTypes.array
 };
