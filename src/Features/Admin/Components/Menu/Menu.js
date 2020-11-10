@@ -94,6 +94,7 @@ export default function Menu () {
             nPageInfo.page = 1;
             nPageInfo.limit = pageSize;
             nPageInfo.keyword = '';
+            setFilterValue('');
         }
         dispatch(rquestFoodList(nPageInfo));
         clearFilters();

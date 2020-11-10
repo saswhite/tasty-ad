@@ -2,6 +2,7 @@ import React,{ useState } from 'react';
 import { Switch,Link,useLocation,useHistory,useRouteMatch,Redirect } from 'react-router-dom';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { v4 } from 'uuid';
 
 /* style */
 import './admin.scss';
@@ -34,7 +35,15 @@ export default function Admin ({ routes }) {
     /* crumb */
     let renderLocation = ()=>{
         let title = location.pathname;
-        return _.capitalize(title.slice(_.lastIndexOf(title,'/') + 1));
+        console.log(title.split('/'));
+        return _.map(title.split('/'),(item,index)=>{
+            console.log(_.capitalize(item));
+            if(index === 1){
+                return (<Breadcrumb.Item key={ v4() } className="col-45 fw">{_.capitalize(item)}</Breadcrumb.Item>);
+            } else if(index > 1){
+                return ( <Breadcrumb.Item key={ v4() } className="col-85 fw">{_.capitalize(item)}</Breadcrumb.Item>);
+            }
+        });
     };
 
     return (
@@ -70,8 +79,7 @@ export default function Admin ({ routes }) {
                     <Header className="site-layout-background bgc-1F" style={{ padding : 0 }} />
                     <Content style={{ margin : '0 16px' }}>
                         <Breadcrumb style={{ margin : '16px 0' }} className="left">
-                            <Breadcrumb.Item className="col-45 fw">Admin</Breadcrumb.Item>
-                            <Breadcrumb.Item className="col-85 fw">{renderLocation()}</Breadcrumb.Item>
+                            {renderLocation()}
                         </Breadcrumb>
                         <div className="site-layout-background" style={{ padding : 24, minHeight : 360 }}>
                             <Switch>
