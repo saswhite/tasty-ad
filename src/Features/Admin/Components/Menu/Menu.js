@@ -45,7 +45,7 @@ export default function Menu () {
     let renderTotalRestName = ()=>{
         return _.map(rest,(item)=>{
             return (
-                <Option value={ item.name['en-US'] } key={ item._id }>{item.name['zh-CN']}</Option>
+                <Option value={ item._id } key={ item._id }>{item.name['zh-CN']}</Option>
             );
         });
     };
@@ -155,16 +155,13 @@ export default function Menu () {
                     style={{ width : '200px' }}
                     className="left"
                     onChange={ (v)=>{
-                        let data = {};
-                        _.forEach(rest,(item)=>{
-                            if(item.name['en-US'] === v){
-                                data.id = item._id;
-                                data.page = 1;
-                                data.limit = pageSize;
-                                data.keyword = '';
-                                dispatch(setRest(item));
-                            }
-                        });
+                        let data = {
+                            id: v,
+                            page: 1,
+                            limit: pageSize,
+                            keyword:''
+                        };
+                        dispatch(setRest(v));
                         setPageInfo(data);
                         dispatch(rquestFoodList(data));
                     } }
@@ -186,7 +183,7 @@ export default function Menu () {
                     onChange={ (pagination)=>{
                         setPageSize(pagination.pageSize);
                         let data = {
-                            id: restT._id,
+                            id: restT,
                             page: pagination.current,
                             limit: pagination.pageSize,
                             keyword: filterValue

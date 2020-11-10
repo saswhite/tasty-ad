@@ -9,7 +9,7 @@ export const menuSlice = createSlice({
     initialState: {
         foodList: [],
         total: 0,
-        rest : {}
+        rest : ''
     },
     reducers: {
         renderFoodList: (state, action) => {
